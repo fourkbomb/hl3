@@ -24,4 +24,8 @@
             I.Tick()
         Next
     End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Spawn(New Asteroid(), 20, 20)
+    End Sub
 End Class

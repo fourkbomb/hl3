@@ -21,7 +21,14 @@
     Public Overrides Sub Tick()
         'This is called 20-30 times every second in theory
         Console.WriteLine("Tick!")
-        Me.Left += 5
+        Dim rand = New Random()
+        If rand.Next() Mod 10 > 5 Then
+            Me.Left += 5
+        Else
+            Me.Left -= 5
+        End If
+
+
 
     End Sub
 
