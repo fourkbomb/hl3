@@ -9,10 +9,10 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("hl3")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("DET-NSW")> 
-<Assembly: AssemblyProduct("hl3")> 
-<Assembly: AssemblyCopyright("Copyright © DET-NSW 2015")> 
+<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyProduct("hl3")>
+<Assembly: AssemblyCopyright("")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

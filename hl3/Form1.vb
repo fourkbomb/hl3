@@ -1,31 +1,145 @@
 ﻿Public Class Form1
+    Public Shared INSTANCE As Form1
 
     Private Objects As List(Of Tickable) = New List(Of Tickable)
+    Public Asteroids As List(Of Asteroid) = New List(Of Asteroid)
+    Public Ship As Spaceship
+    Public Missiles As List(Of Missile) = New List(Of Missile)
+
+    Private KeyStatuses As Dictionary(Of Keys, Boolean) = New Dictionary(Of Keys, Boolean)
+
+    Private FPSCounterThread As Threading.Thread
+    Public FramesDone = 0
+    Private LastFPS As Integer = 0
+    Private CurFPS As Integer = 30
+
+    Public StartTime = New Date()
+    Private InLoop = False
+    Private ToSpawn = New List(Of Tickable)
+    Private ToUnspawn = New List(Of Tickable)
+
+    Protected Overrides ReadOnly Property CreateParams() As CreateParams
+        Get
+            Dim cp As CreateParams = MyBase.CreateParams
+            cp.ExStyle = cp.ExStyle Or &H02000000
+            Return cp
+        End Get
+    End Property
+
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        INSTANCE = Me
+        FPSCounterThread = New System.Threading.Thread(AddressOf Thread_FPSCounter)
+    End Sub
+
+    Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
+        'Console.WriteLine(e.KeyCode.ToString() & " down")
+        If Me.KeyStatuses.ContainsKey(e.KeyCode) Then
+            Me.KeyStatuses.Remove(e.KeyCode)
+        End If
+
+        Me.KeyStatuses.Add(e.KeyCode, True)
+    End Sub
+
+    Private Sub Form1_KeyUp(sender As Object, e As KeyEventArgs) Handles Me.KeyUp
+        'Console.WriteLine(e.KeyCode.ToString() & " up")
+        If Me.KeyStatuses.ContainsKey(e.KeyCode) Then
+            Me.KeyStatuses.Remove(e.KeyCode)
+        End If
+        Me.KeyStatuses.Add(e.KeyCode, False)
+    End Sub
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        EventTimer.Interval = 1000 / 30
+        EventTimer.Interval = 1000 / 40
         EventTimer.Start()
-        Dim s As Asteroid = New Asteroid()
+        StartTime = New Date()
+        FPSCounterThread.Start()
+        'Dim s As Asteroid = New Asteroid()
+        Dim s = New Spaceship()
         Spawn(s, 20, 20)
+        'Spawn(s, 20, 20)
     End Sub
+
+    Private Sub Thread_FPSCounter()
+        While True
+            Threading.Thread.Sleep(1000)
+            CurFPS = (FramesDone)
+            FramesDone = 0
+        End While
+    End Sub
+
+    Public Function IsKeyPressed(k As Keys) As Boolean
+        If Me.KeyStatuses.ContainsKey(k) Then
+            Dim r = False
+            Me.KeyStatuses.TryGetValue(k, r)
+            Return r
+        End If
+        Return False
+    End Function
+
 
     Public Sub Spawn(t As Tickable, x As Integer, y As Integer)
         t.Top = y
-        t.Height = x
-        Objects.Add(t)
-        t.BackgroundImage = My.Resources.rock
-        t.Height = 128
-        t.Width = 128
+        t.Left = x
+        Console.WriteLine("Spawning " & t.GetType().ToString() & " at " & x & ", " & y)
+        If Me.InLoop Then
+            ToSpawn.Add(t)
+        Else
+            Objects.Add(t)
+        End If
+        If TypeOf t Is Asteroid Then
+            Asteroids.Add(t)
+        ElseIf TypeOf t Is Spaceship
+            Ship = t
+        ElseIf TypeOf t Is Missile
+            Missiles.Add(t)
+        End If
+        ' TODO: individual objects should decide this, not the main thread
+        t.Height = 32
+        t.Width = 32
         Me.Controls.Add(t)
     End Sub
 
-    Private Sub EventTimer_Tick(sender As Object, e As EventArgs) Handles EventTimer.Tick
-        For Each I In Objects
-            I.Tick()
-        Next
+    Public Sub Unspawn(t As Tickable)
+        Me.Controls.Remove(t)
+        If Me.InLoop Then
+            ToUnspawn.Add(t)
+        Else
+            Objects.Remove(t)
+        End If
+        If TypeOf t Is Asteroid Then
+            Asteroids.Remove(t)
+        ElseIf TypeOf t Is Spaceship
+            Ship = Nothing
+            Console.WriteLine("Deleteing the Ship!")
+        ElseIf TypeOf t Is Missile
+            Missiles.Remove(t)
+        End If
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Spawn(New Asteroid(), 20, 20)
+    Private Sub EventTimer_Tick(sender As Object, e As EventArgs) Handles EventTimer.Tick
+        Me.InLoop = True
+        For Each I In Objects
+            I.Tick(Me)
+        Next
+        Me.InLoop = False
+        For Each I In ToSpawn
+            Objects.Add(I)
+        Next
+        For Each I In ToUnspawn
+            Console.WriteLine("UNSPAWN")
+            Objects.Remove(I)
+        Next
+        ToUnspawn = New List(Of Tickable)
+        ToSpawn = New List(Of Tickable)
+        If LastFPS <> CurFPS Then
+            Me.LblFPSCounter.Text = CurFPS
+            LastFPS = CurFPS
+        End If
+        FramesDone += 1
     End Sub
 End Class
