@@ -14,6 +14,9 @@ Public Class Spaceship
     Private FramesSinceLastAster = 30
     Private Const MISSILE_SPEED = 7
     Private Angle As Integer = 0
+    Private Lives As Integer = 3
+    Private InvincibilityFrames As Integer = 0
+    Private Spawning As Boolean = True
 
     Dim curXChange = 0
     Dim curYChange = 0
@@ -46,17 +49,27 @@ Public Class Spaceship
         Me.curYChange = speedVector.Y * 5
     End Sub
 
-    Private Function GetNoseLocation() As PointF
+    Private Function GetCentre() As Point
         Dim centreX = (Me.Left + Me.Right) / 2
         Dim centreY = (Me.Top + Me.Bottom) / 2
-
-        If Me.Angle < 90 Then
-
-        ElseIf Me.Angle < 180
-        ElseIf Me.Angle < 270
-        Else
-        End If
+        Return New Point(centreX, centreY)
     End Function
+
+    Public Function Overlaps(r As Rectangle) As Boolean ' TODO make this better
+        If r.Contains(GetCentre()) Then
+            Return True
+        End If
+        Return False
+    End Function
+
+    Public Sub Collided()
+        Lives -= 1
+        CType(Me.Parent, Form1).ded(Lives)
+        If Lives >= 0 Then
+            ' teleport somewhere safe
+            Dim p As Form1 = CType(Me.Parent, Form1)
+        End If
+    End Sub
 
     Private Function GetSpeedVector() As PointF
         Dim yChange = Math.Abs(Math.Cos(Math.PI * Me.Angle / 180))
@@ -91,6 +104,10 @@ Public Class Spaceship
 
     Public Overrides Sub Tick(form1 As Form1)
         ' Called 20-30 times every second
+        If Spawning Then
+            ' Flash on and off
+            ' Return to a safe place/be invincible or something
+        End If
         If form1.IsKeyPressed(Keys.Space) And FramesSinceLastShot > 15 Then
             FramesSinceLastShot = 0
             Shoot()

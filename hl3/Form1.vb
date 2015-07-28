@@ -104,6 +104,14 @@
         Me.Controls.Add(t)
     End Sub
 
+    Public Sub ded(livesLeft As Integer)
+        If livesLeft < 0 Then
+            Form2.ShowDialog()
+            End
+        End If
+        LblLives.Text = "Lives: " & livesLeft
+    End Sub
+
     Public Sub Unspawn(t As Tickable)
         Me.Controls.Remove(t)
         If Me.InLoop Then

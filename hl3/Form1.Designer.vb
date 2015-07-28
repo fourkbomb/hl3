@@ -25,6 +25,7 @@ Partial Class Form1
         Me.components = New System.ComponentModel.Container()
         Me.EventTimer = New System.Windows.Forms.Timer(Me.components)
         Me.LblFPSCounter = New System.Windows.Forms.Label()
+        Me.LblLives = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'EventTimer
@@ -39,11 +40,21 @@ Partial Class Form1
         Me.LblFPSCounter.TabIndex = 0
         Me.LblFPSCounter.Text = "0"
         '
+        'LblLives
+        '
+        Me.LblLives.AutoSize = True
+        Me.LblLives.Location = New System.Drawing.Point(12, 362)
+        Me.LblLives.Name = "LblLives"
+        Me.LblLives.Size = New System.Drawing.Size(62, 13)
+        Me.LblLives.TabIndex = 1
+        Me.LblLives.Text = "Lives: 9001"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(518, 384)
+        Me.Controls.Add(Me.LblLives)
         Me.Controls.Add(Me.LblFPSCounter)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -56,4 +67,5 @@ Partial Class Form1
     End Sub
     Friend WithEvents EventTimer As System.Windows.Forms.Timer
     Friend WithEvents LblFPSCounter As Label
+    Friend WithEvents LblLives As Label
 End Class
