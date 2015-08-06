@@ -141,7 +141,7 @@
             Asteroids.Remove(t)
         ElseIf TypeOf t Is Spaceship
             Ship = Nothing
-            Console.WriteLine("Deleteing the Ship!")
+            Console.WriteLine("Deleting the Ship!")
         ElseIf TypeOf t Is Missile
             Missiles.Remove(t)
         End If
