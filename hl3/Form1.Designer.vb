@@ -34,31 +34,33 @@ Partial Class Form1
         'LblFPSCounter
         '
         Me.LblFPSCounter.AutoSize = True
-        Me.LblFPSCounter.Location = New System.Drawing.Point(13, 13)
+        Me.LblFPSCounter.Location = New System.Drawing.Point(17, 16)
+        Me.LblFPSCounter.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblFPSCounter.Name = "LblFPSCounter"
-        Me.LblFPSCounter.Size = New System.Drawing.Size(13, 13)
+        Me.LblFPSCounter.Size = New System.Drawing.Size(16, 17)
         Me.LblFPSCounter.TabIndex = 0
         Me.LblFPSCounter.Text = "0"
         '
         'LblLives
         '
         Me.LblLives.AutoSize = True
-        Me.LblLives.Location = New System.Drawing.Point(12, 362)
+        Me.LblLives.Location = New System.Drawing.Point(16, 446)
+        Me.LblLives.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblLives.Name = "LblLives"
-        Me.LblLives.Size = New System.Drawing.Size(62, 13)
+        Me.LblLives.Size = New System.Drawing.Size(81, 17)
         Me.LblLives.TabIndex = 1
         Me.LblLives.Text = "Lives: 9001"
         '
         'Form1
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(518, 384)
+        Me.ClientSize = New System.Drawing.Size(691, 473)
         Me.Controls.Add(Me.LblLives)
         Me.Controls.Add(Me.LblFPSCounter)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(2)
+        Me.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.Name = "Form1"
         Me.Text = "Form1"
         Me.ResumeLayout(False)

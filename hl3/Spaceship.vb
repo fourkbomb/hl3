@@ -12,24 +12,25 @@ Public Class Spaceship
     Private Facing As Direction = Direction.UP
     Private FramesSinceLastShot = 30
     Private FramesSinceLastAster = 30
-    Private Const MISSILE_SPEED = 7
+    Private Const MISSILE_SPEED = 9
+    Private Const SLOWDOWN = 0.98
     Private Angle As Integer = 0
     Private Lives As Integer = 3
     Private InvincibilityFrames As Integer = 0
     Private Spawning As Boolean = True
 
-    Dim curXChange = 0
-    Dim curYChange = 0
+    Dim curXChange As Single = 0
+    Dim curYChange As Single = 0
 
     Public Sub New()
-        Console.WriteLine("HI THERE")
         Me.Image = My.Resources.spaceship
     End Sub
 
     Private Sub HandleMovement(d As Direction)
 
-        Me.Top += Me.curYChange
-        Me.Left += Me.curXChange
+        Dim sv = GetSpeedVector()
+        Me.curYChange = sv.Y * 7
+        Me.curXChange = sv.X * 7
 
     End Sub
 
@@ -44,9 +45,9 @@ Public Class Spaceship
         End If
         Me.Angle = Me.Angle Mod 360
         Me.Image = GraphicsUtil.RotateImage(My.Resources.spaceship, Me.Angle)
-        Dim speedVector = GetSpeedVector()
-        Me.curXChange = speedVector.X * 5
-        Me.curYChange = speedVector.Y * 5
+        'Dim speedVector = GetSpeedVector()
+        'Me.curXChange = speedVector.X * 5
+        'Me.curYChange = speedVector.Y * 5
     End Sub
 
     Private Function GetCentre() As Point
@@ -63,11 +64,15 @@ Public Class Spaceship
     End Function
 
     Public Sub Collided()
+        If Spawning Then
+            Return
+        End If
         Lives -= 1
         CType(Me.Parent, Form1).ded(Lives)
         If Lives >= 0 Then
             ' teleport somewhere safe
-            Dim p As Form1 = CType(Me.Parent, Form1)
+            'Dim p As Form1 = CType(Me.Parent, Form1)
+            Spawning = True
         End If
     End Sub
 
@@ -107,6 +112,35 @@ Public Class Spaceship
         If Spawning Then
             ' Flash on and off
             ' Return to a safe place/be invincible or something
+            If InvincibilityFrames Mod 5 = 0 Then
+                Me.Visible = Not Me.Visible
+            End If
+            InvincibilityFrames += 1
+            If InvincibilityFrames > 60 Then
+                Me.Visible = True
+                Spawning = False
+                InvincibilityFrames = 0
+            End If
+        End If
+        Me.Top += Me.curYChange
+        Me.Left += Me.curXChange
+        ' slow down a little bit
+        Me.curXChange *= SLOWDOWN
+        Me.curYChange *= SLOWDOWN
+
+        If (Me.Left + Me.Width / 2) > Parent.Width And Me.curXChange > 0 Then ' gone off-screen, come back on the other side
+            Me.Left = -Me.Width / 2
+        ElseIf Me.Right < 0 And Me.curYChange < 0 Then
+            Me.Left = Parent.Width - Me.Width / 2
+        ElseIf Me.Top < 0 And Me.curYChange < 0 Then
+            Me.Top = Parent.Height - Me.Height / 2
+        ElseIf (Me.Top - Me.Height / 2) > Parent.Height And Me.curYChange > 0 Then
+            Me.Top = -Me.Height / 2
+        End If
+        If Not Me.Visible Then
+            FramesSinceLastAster += 1
+            FramesSinceLastShot += 1
+            Return
         End If
         If form1.IsKeyPressed(Keys.Space) And FramesSinceLastShot > 15 Then
             FramesSinceLastShot = 0

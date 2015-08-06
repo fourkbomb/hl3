@@ -12,6 +12,9 @@
     Public FramesDone = 0
     Private LastFPS As Integer = 0
     Private CurFPS As Integer = 30
+    Private MaxAsteroids As Integer = 5
+    Private FramesSinceLastAsteroid = 30
+    Private Const ASTEROID_SPEED = 5
 
     Public StartTime = New Date()
     Private InLoop = False
@@ -34,6 +37,18 @@
         ' Add any initialization after the InitializeComponent() call.
         INSTANCE = Me
         FPSCounterThread = New System.Threading.Thread(AddressOf Thread_FPSCounter)
+    End Sub
+
+    Private Sub RandomlySpawnAsteroid()
+        Dim r = New Random()
+        Dim x = r.Next() Mod Me.Width
+        Dim y = r.Next() Mod Me.Height
+        Dim xChange = r.NextDouble()
+        Dim yChange = Math.Sqrt(1 - Math.Pow(xChange, 2))
+        yChange *= ASTEROID_SPEED
+        xChange *= ASTEROID_SPEED
+        Dim asteroid = New Asteroid(xChange, yChange)
+        Spawn(asteroid, x, y)
     End Sub
 
     Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
@@ -106,6 +121,9 @@
 
     Public Sub ded(livesLeft As Integer)
         If livesLeft < 0 Then
+            If Form2.Visible Then
+                Return
+            End If
             Form2.ShowDialog()
             End
         End If
@@ -130,6 +148,10 @@
     End Sub
 
     Private Sub EventTimer_Tick(sender As Object, e As EventArgs) Handles EventTimer.Tick
+        If Asteroids.Count < MaxAsteroids And FramesSinceLastAsteroid > 60 Then
+            RandomlySpawnAsteroid()
+            FramesSinceLastAsteroid = -1
+        End If
         Me.InLoop = True
         For Each I In Objects
             I.Tick(Me)
@@ -149,5 +171,6 @@
             LastFPS = CurFPS
         End If
         FramesDone += 1
+        FramesSinceLastAsteroid += 1
     End Sub
 End Class

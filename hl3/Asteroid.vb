@@ -12,6 +12,7 @@
         Me.BackgroundImage = My.Resources.rock
         Me.xc = xChange
         Me.yc = yChange
+        Me.SizeMode = PictureBoxSizeMode.StretchImage
 
     End Sub
 
@@ -21,8 +22,9 @@
 
     Private Sub Init()
         Me.Image = My.Resources.rock
-        Me.Width = 128
-        Me.Height = 128
+        Me.Width = 32
+        Me.Height = 32
+
     End Sub
 
     Public Sub MissileCollision()
@@ -38,6 +40,9 @@
         ticking = True
         Me.Left += Me.xc
         Me.Top += Me.yc
+        If IsNothing(Parent) Then
+            Return
+        End If
         If Me.Left > Parent.Width And Me.xc > 0 Then ' gone off-screen
             Me.Left = -Me.Width
         ElseIf Me.Right < 0 And Me.xc < 0 Then
@@ -50,6 +55,7 @@
 
         If blah.Ship.Overlaps(Me.Bounds) Then
             blah.Ship.Collided()
+            ticking = False
             Me.MissileCollision()
         End If
         ticking = False
