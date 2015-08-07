@@ -24,7 +24,7 @@
     Protected Overrides ReadOnly Property CreateParams() As CreateParams
         Get
             Dim cp As CreateParams = MyBase.CreateParams
-            cp.ExStyle = cp.ExStyle Or &H2000000
+            cp.ExStyle = cp.ExStyle Or &H02000000
             Return cp
         End Get
     End Property
@@ -108,9 +108,9 @@
         End If
         If TypeOf t Is Asteroid Then
             Asteroids.Add(t)
-        ElseIf TypeOf t Is Spaceship Then
+        ElseIf TypeOf t Is Spaceship
             Ship = t
-        ElseIf TypeOf t Is Missile Then
+        ElseIf TypeOf t Is Missile
             Missiles.Add(t)
         End If
         ' TODO: individual objects should decide this, not the main thread
@@ -139,10 +139,10 @@
         End If
         If TypeOf t Is Asteroid Then
             Asteroids.Remove(t)
-        ElseIf TypeOf t Is Spaceship Then
+        ElseIf TypeOf t Is Spaceship
             Ship = Nothing
             Console.WriteLine("Deleting the Ship!")
-        ElseIf TypeOf t Is Missile Then
+        ElseIf TypeOf t Is Missile
             Missiles.Remove(t)
         End If
     End Sub
@@ -173,9 +173,4 @@
         FramesDone += 1
         FramesSinceLastAsteroid += 1
     End Sub
-
-    Private Sub LblLives_Click(sender As Object, e As EventArgs) Handles LblLives.Click
-
-    End Sub
-
 End Class

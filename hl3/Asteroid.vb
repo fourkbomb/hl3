@@ -59,6 +59,8 @@
             Me.MissileCollision()
         End If
         ticking = False
+
+
     End Sub
 
     Sub Dead()
