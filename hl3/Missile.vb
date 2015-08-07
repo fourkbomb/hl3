@@ -9,8 +9,8 @@ Public Class Missile
         Me.xc = xChange
         Me.yc = yChange
         Me.BackgroundImage = My.Resources.missile
-        Me.Height = 32
-        Me.Width = 32
+        Me.Height = 13
+        Me.Width = 7
     End Sub
 
     Public Overrides Sub Tick(blah As Form1)
