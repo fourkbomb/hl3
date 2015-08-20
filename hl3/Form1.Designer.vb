@@ -35,6 +35,7 @@ Partial Class Form1
         'LblFPSCounter
         '
         Me.LblFPSCounter.AutoSize = True
+        Me.LblFPSCounter.ForeColor = System.Drawing.SystemColors.ButtonHighlight
         Me.LblFPSCounter.Location = New System.Drawing.Point(19, 20)
         Me.LblFPSCounter.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblFPSCounter.Name = "LblFPSCounter"
@@ -45,6 +46,7 @@ Partial Class Form1
         'LblLives
         '
         Me.LblLives.AutoSize = True
+        Me.LblLives.ForeColor = System.Drawing.SystemColors.ButtonHighlight
         Me.LblLives.Location = New System.Drawing.Point(114, 20)
         Me.LblLives.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblLives.Name = "LblLives"
@@ -57,6 +59,7 @@ Partial Class Form1
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange
+        Me.BackColor = System.Drawing.Color.Gray
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(1569, 860)
