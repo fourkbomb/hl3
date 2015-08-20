@@ -9,7 +9,7 @@ Public Class Missile
         Me.xc = xChange
         Me.yc = yChange
         Me.BackgroundImage = My.Resources.missile
-        Me.Height = 13
+        Me.Height = 7
         Me.Width = 7
     End Sub
 
