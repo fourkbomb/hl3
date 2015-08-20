@@ -24,6 +24,8 @@ Public Class Spaceship
 
     Public Sub New()
         Me.Image = My.Resources.spaceship
+        Me.Height = 32
+        Me.Width = 32
     End Sub
 
     Private Sub HandleMovement(d As Direction)
@@ -50,14 +52,14 @@ Public Class Spaceship
         'Me.curYChange = speedVector.Y * 5
     End Sub
 
-    Private Function GetCentre() As Point
-        Dim centreX = (Me.Left + Me.Right) / 2
-        Dim centreY = (Me.Top + Me.Bottom) / 2
-        Return New Point(centreX, centreY)
+    Private Function GetCentre() As Rectangle
+        Dim topLeftX = (Me.Left + Me.Right) / 2 - Me.Width / 2
+        Dim topLeftY = (Me.Top + Me.Bottom) / 2 - Me.Height / 2
+        Return New Rectangle(topLeftX, topLeftY, Me.Width / 2, Me.Height / 2)
     End Function
 
     Public Function Overlaps(r As Rectangle) As Boolean ' TODO make this better
-        If r.Contains(GetCentre()) Then
+        If r.IntersectsWith(GetCentre()) Then
             Return True
         End If
         Return False
@@ -129,9 +131,9 @@ Public Class Spaceship
         Me.curYChange *= SLOWDOWN
 
         If (Me.Left + Me.Width / 2) > Parent.Width And Me.curXChange > 0 Then ' gone off-screen, come back on the other side
-            Me.Left = -Me.Width / 2
+            Me.Left = 0 - Me.Width / 2
         ElseIf Me.Right < 0 And Me.curYChange < 0 Then
-            Me.Left = Parent.Width - Me.Width / 2
+            Me.Left = Parent.Width - Me.Width ' / 2
         ElseIf Me.Top < 0 And Me.curYChange < 0 Then
             Me.Top = Parent.Height - Me.Height / 2
         ElseIf (Me.Top - Me.Height / 2) > Parent.Height And Me.curYChange > 0 Then

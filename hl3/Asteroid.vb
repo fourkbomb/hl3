@@ -8,23 +8,24 @@
     Private yc As Double
     Private ticking As Boolean = False ' necessary so that it doesn't crash
     Public Sub New(xChange As Double, yChange As Double)
-        DestroyedCount = 0
-        Me.BackgroundImage = My.Resources.rock
+        DestroyedCount = 1
+        Me.Image = My.Resources.rock
         Me.xc = xChange
         Me.yc = yChange
         Me.SizeMode = PictureBoxSizeMode.StretchImage
+        Me.Width = 48
+        Me.Height = 48
 
     End Sub
 
-    Private Sub New(dc As Integer)
+    Private Sub New(dc As Integer, xChange As Double, yChange As Double)
         DestroyedCount = dc
-    End Sub
-
-    Private Sub Init()
         Me.Image = My.Resources.rock
-        Me.Width = 32
-        Me.Height = 32
-
+        Me.xc = xChange
+        Me.yc = yChange
+        Me.Width = 48 * (1 / dc)
+        Me.Height = 48 * (1 / dc)
+        Me.SizeMode = PictureBoxSizeMode.StretchImage
     End Sub
 
     Public Sub MissileCollision()
@@ -32,6 +33,12 @@
         While ticking 'Um
         End While
         Form1.INSTANCE.Unspawn(Me)
+        If Me.DestroyedCount < 3 Then
+            Dim a1 = New Asteroid(DestroyedCount + 1, xc, yc)
+            Dim a2 = New Asteroid(DestroyedCount + 1, -xc, yc)
+            Form1.INSTANCE.Spawn(a1, Me.Left, Me.Top)
+            Form1.INSTANCE.Spawn(a2, Me.Left, Me.Top)
+        End If
     End Sub
 
 

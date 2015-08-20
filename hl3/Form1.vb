@@ -12,7 +12,7 @@
     Public FramesDone = 0
     Private LastFPS As Integer = 0
     Private CurFPS As Integer = 30
-    Private MaxAsteroids As Integer = 5
+    Private MaxAsteroids As Integer = 2
     Private FramesSinceLastAsteroid = 30
     Private Const ASTEROID_SPEED = 5
 
@@ -114,8 +114,8 @@
             Missiles.Add(t)
         End If
         ' TODO: individual objects should decide this, not the main thread
-        t.Height = 32
-        t.Width = 32
+        't.Height = 32
+        't.Width = 32
         Me.Controls.Add(t)
     End Sub
 
